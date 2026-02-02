@@ -54,18 +54,18 @@ export const EquityChart = ({ data, initialCapital }: EquityChartProps) => {
             </defs>
             <CartesianGrid
               strokeDasharray="3 3"
-              stroke="hsl(225 15% 20%)"
+              stroke="hsl(214 32% 91%)"
               vertical={false}
             />
             <XAxis
               dataKey="date"
-              stroke="hsl(215 15% 55%)"
+              stroke="hsl(215 16% 47%)"
               fontSize={11}
               tickLine={false}
               axisLine={false}
             />
             <YAxis
-              stroke="hsl(215 15% 55%)"
+              stroke="hsl(215 16% 47%)"
               fontSize={11}
               tickLine={false}
               axisLine={false}
@@ -74,8 +74,8 @@ export const EquityChart = ({ data, initialCapital }: EquityChartProps) => {
             />
             <Tooltip
               contentStyle={{
-                backgroundColor: "hsl(225 25% 8%)",
-                border: "1px solid hsl(225 15% 18%)",
+                backgroundColor: "hsl(0 0% 100%)",
+                border: "1px solid hsl(214 32% 91%)",
                 borderRadius: "8px",
                 fontSize: "12px",
               }}
@@ -83,7 +83,7 @@ export const EquityChart = ({ data, initialCapital }: EquityChartProps) => {
                 `${formatCurrency(value)} (${formatPercent(props.payload.percentChange, true)})`,
                 "Equity",
               ]}
-              labelStyle={{ color: "hsl(210 20% 95%)" }}
+              labelStyle={{ color: "hsl(222 47% 11%)" }}
             />
             <Area
               type="monotone"

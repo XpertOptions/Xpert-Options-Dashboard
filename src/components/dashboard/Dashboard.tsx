@@ -37,7 +37,7 @@ export const Dashboard = () => {
           </div>
           <div>
             <h1 className="text-2xl md:text-3xl font-bold text-foreground tracking-tight">
-              Trading Dashboard
+              Xpert Options Dashboard
             </h1>
             <p className="text-sm text-muted-foreground">
               Capital: {formatCurrency(initialCapital)} • {dailyPnL?.length || 0} trading days
@@ -82,7 +82,7 @@ export const Dashboard = () => {
       {/* Footer */}
       <footer className="mt-12 pt-6 border-t border-border text-center">
         <p className="text-xs text-muted-foreground">
-          Professional PnL Tracking & Risk Analytics • All calculations based on initial capital
+          Xpert Options • Professional PnL Tracking & Risk Analytics
         </p>
       </footer>
     </div>

@@ -1,0 +1,90 @@
+import { useAccountSettings, useDailyPnL } from "@/hooks/usePnLData";
+import { usePnLCalculations } from "@/hooks/usePnLCalculations";
+import { AddPnLDialog } from "./AddPnLDialog";
+import { SettingsDialog } from "./SettingsDialog";
+import { MetricsSections } from "./MetricsSections";
+import { EquityChart } from "./EquityChart";
+import { DrawdownChart } from "./DrawdownChart";
+import { DailyPnLChart } from "./DailyPnLChart";
+import { formatCurrency } from "@/lib/formatters";
+import { BarChart3, Loader2 } from "lucide-react";
+
+export const Dashboard = () => {
+  const { data: settings, isLoading: settingsLoading } = useAccountSettings();
+  const { data: dailyPnL, isLoading: pnlLoading } = useDailyPnL();
+
+  const initialCapital = settings?.initial_capital || 100000;
+  const metrics = usePnLCalculations(dailyPnL, initialCapital);
+
+  if (settingsLoading || pnlLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <p className="text-muted-foreground">Loading dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen p-4 md:p-6 lg:p-8">
+      {/* Header */}
+      <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+        <div className="flex items-center gap-3">
+          <div className="p-2 rounded-xl bg-primary/10">
+            <BarChart3 className="h-6 w-6 text-primary" />
+          </div>
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold text-foreground tracking-tight">
+              Trading Dashboard
+            </h1>
+            <p className="text-sm text-muted-foreground">
+              Capital: {formatCurrency(initialCapital)} • {dailyPnL?.length || 0} trading days
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center gap-3">
+          {settings && (
+            <SettingsDialog
+              currentId={settings.id}
+              currentCapital={settings.initial_capital}
+            />
+          )}
+          <AddPnLDialog />
+        </div>
+      </header>
+
+      {/* Metrics */}
+      <MetricsSections metrics={metrics} initialCapital={initialCapital} />
+
+      {/* Charts */}
+      <section className="mt-8">
+        <h2 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+          <BarChart3 className="h-5 w-5 text-primary" />
+          Charts
+        </h2>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <EquityChart
+            data={metrics.equityCurve}
+            initialCapital={initialCapital}
+          />
+          <DrawdownChart data={metrics.drawdownCurve} />
+        </div>
+        <div className="mt-6">
+          <DailyPnLChart
+            data={metrics.equityCurve}
+            initialCapital={initialCapital}
+          />
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="mt-12 pt-6 border-t border-border text-center">
+        <p className="text-xs text-muted-foreground">
+          Professional PnL Tracking & Risk Analytics • All calculations based on initial capital
+        </p>
+      </footer>
+    </div>
+  );
+};

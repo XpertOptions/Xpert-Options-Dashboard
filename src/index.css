@@ -8,66 +8,66 @@
 
 @layer base {
   :root {
-    /* Dark trading theme - deep navy/charcoal */
-    --background: 225 25% 6%;
-    --foreground: 210 20% 95%;
+    /* Light professional theme */
+    --background: 210 20% 98%;
+    --foreground: 222 47% 11%;
 
-    --card: 225 20% 9%;
-    --card-foreground: 210 20% 95%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
 
-    --popover: 225 25% 8%;
-    --popover-foreground: 210 20% 95%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
 
     --primary: 199 89% 48%;
-    --primary-foreground: 225 25% 6%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 225 15% 15%;
-    --secondary-foreground: 210 20% 85%;
+    --secondary: 210 20% 96%;
+    --secondary-foreground: 222 47% 11%;
 
-    --muted: 225 15% 12%;
-    --muted-foreground: 215 15% 55%;
+    --muted: 210 20% 96%;
+    --muted-foreground: 215 16% 47%;
 
     --accent: 199 89% 48%;
-    --accent-foreground: 225 25% 6%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 72% 51%;
-    --destructive-foreground: 210 20% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 225 15% 18%;
-    --input: 225 15% 15%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
     --ring: 199 89% 48%;
 
     --radius: 0.75rem;
 
     /* Trading-specific colors */
     --profit: 160 84% 39%;
-    --profit-foreground: 160 84% 95%;
+    --profit-foreground: 0 0% 100%;
     --loss: 0 72% 51%;
-    --loss-foreground: 0 72% 95%;
+    --loss-foreground: 0 0% 100%;
     
     /* Chart colors */
     --chart-equity: 199 89% 48%;
     --chart-drawdown: 0 72% 51%;
-    --chart-grid: 225 15% 20%;
+    --chart-grid: 214 32% 91%;
     
     /* Gradients */
-    --gradient-profit: linear-gradient(135deg, hsl(160 84% 39%), hsl(160 60% 30%));
-    --gradient-loss: linear-gradient(135deg, hsl(0 72% 51%), hsl(0 60% 40%));
-    --gradient-card: linear-gradient(180deg, hsl(225 20% 11%) 0%, hsl(225 20% 8%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(225 25% 8%) 0%, hsl(225 30% 4%) 100%);
+    --gradient-profit: linear-gradient(135deg, hsl(160 84% 39%), hsl(160 60% 45%));
+    --gradient-loss: linear-gradient(135deg, hsl(0 72% 51%), hsl(0 60% 55%));
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 20% 98%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(210 20% 98%) 0%, hsl(210 25% 96%) 100%);
     
     /* Shadows */
-    --shadow-card: 0 4px 24px -4px hsl(225 50% 3% / 0.5);
-    --shadow-glow-profit: 0 0 20px hsl(160 84% 39% / 0.3);
-    --shadow-glow-loss: 0 0 20px hsl(0 72% 51% / 0.3);
+    --shadow-card: 0 4px 24px -4px hsl(222 47% 11% / 0.08);
+    --shadow-glow-profit: 0 0 20px hsl(160 84% 39% / 0.2);
+    --shadow-glow-loss: 0 0 20px hsl(0 72% 51% / 0.2);
 
-    --sidebar-background: 225 25% 6%;
-    --sidebar-foreground: 210 20% 95%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 222 47% 11%;
     --sidebar-primary: 199 89% 48%;
-    --sidebar-primary-foreground: 225 25% 6%;
-    --sidebar-accent: 225 15% 12%;
-    --sidebar-accent-foreground: 210 20% 95%;
-    --sidebar-border: 225 15% 18%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 20% 96%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 214 32% 91%;
     --sidebar-ring: 199 89% 48%;
   }
 

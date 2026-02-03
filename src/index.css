@@ -72,32 +72,64 @@
   }
 
   .dark {
-    --background: 225 25% 6%;
-    --foreground: 210 20% 95%;
-    --card: 225 20% 9%;
-    --card-foreground: 210 20% 95%;
-    --popover: 225 25% 8%;
-    --popover-foreground: 210 20% 95%;
+    /* Improved dark mode with better contrast */
+    --background: 222 84% 4.9%;
+    --foreground: 210 40% 98%;
+    
+    --card: 222 84% 8%;
+    --card-foreground: 210 40% 98%;
+    
+    --popover: 222 84% 8%;
+    --popover-foreground: 210 40% 98%;
+    
     --primary: 199 89% 48%;
-    --primary-foreground: 225 25% 6%;
-    --secondary: 225 15% 15%;
-    --secondary-foreground: 210 20% 85%;
-    --muted: 225 15% 12%;
-    --muted-foreground: 215 15% 55%;
-    --accent: 199 89% 48%;
-    --accent-foreground: 225 25% 6%;
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 210 20% 98%;
-    --border: 225 15% 18%;
-    --input: 225 15% 15%;
+    --primary-foreground: 222 84% 4.9%;
+    
+    --secondary: 217 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    
+    --muted: 217 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    
+    --accent: 217 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    
+    --border: 217 32.6% 17.5%;
+    --input: 217 32.6% 17.5%;
     --ring: 199 89% 48%;
-    --sidebar-background: 225 25% 6%;
-    --sidebar-foreground: 210 20% 95%;
+    
+    /* Trading-specific colors for dark mode */
+    --profit: 142 76% 36%;
+    --profit-foreground: 210 40% 98%;
+    --loss: 0 84% 60%;
+    --loss-foreground: 210 40% 98%;
+    
+    /* Chart colors for dark mode */
+    --chart-equity: 199 89% 48%;
+    --chart-drawdown: 0 84% 60%;
+    --chart-grid: 217 32.6% 17.5%;
+    
+    /* Dark mode gradients */
+    --gradient-profit: linear-gradient(135deg, hsl(142 76% 36%), hsl(142 70% 40%));
+    --gradient-loss: linear-gradient(135deg, hsl(0 84% 60%), hsl(0 80% 65%));
+    --gradient-card: linear-gradient(180deg, hsl(222 84% 8%) 0%, hsl(222 84% 6%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(222 84% 4.9%) 0%, hsl(222 84% 7%) 100%);
+    
+    /* Dark mode shadows */
+    --shadow-card: 0 4px 24px -4px hsl(222 84% 4.9% / 0.4);
+    --shadow-glow-profit: 0 0 20px hsl(142 76% 36% / 0.3);
+    --shadow-glow-loss: 0 0 20px hsl(0 84% 60% / 0.3);
+
+    --sidebar-background: 222 84% 4.9%;
+    --sidebar-foreground: 210 40% 98%;
     --sidebar-primary: 199 89% 48%;
-    --sidebar-primary-foreground: 225 25% 6%;
-    --sidebar-accent: 225 15% 12%;
-    --sidebar-accent-foreground: 210 20% 95%;
-    --sidebar-border: 225 15% 18%;
+    --sidebar-primary-foreground: 222 84% 4.9%;
+    --sidebar-accent: 217 32.6% 17.5%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217 32.6% 17.5%;
     --sidebar-ring: 199 89% 48%;
   }
 }
@@ -120,7 +152,7 @@
 
 @layer components {
   .metric-card {
-    @apply relative overflow-hidden rounded-xl border border-border bg-card p-5;
+    @apply relative overflow-hidden rounded-xl border border-border bg-card p-5 transition-all duration-200;
     background: var(--gradient-card);
     box-shadow: var(--shadow-card);
   }
@@ -135,20 +167,49 @@
     @apply opacity-100;
   }
 
+  .metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card), 0 8px 32px -8px hsl(var(--primary) / 0.15);
+  }
+
   .profit-value {
-    @apply text-profit;
+    @apply text-profit font-semibold;
     text-shadow: 0 0 20px hsl(var(--profit) / 0.4);
   }
 
   .loss-value {
-    @apply text-loss;
+    @apply text-loss font-semibold;
     text-shadow: 0 0 20px hsl(var(--loss) / 0.4);
   }
 
   .chart-container {
-    @apply rounded-xl border border-border bg-card p-4;
+    @apply rounded-xl border border-border bg-card p-4 transition-all duration-200;
     background: var(--gradient-card);
     box-shadow: var(--shadow-card);
+  }
+
+  .chart-container:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-card), 0 6px 24px -6px hsl(var(--primary) / 0.1);
+  }
+
+  /* Dark mode specific improvements */
+  .dark .metric-card {
+    border-color: hsl(217 32.6% 17.5%);
+    background: linear-gradient(180deg, hsl(222 84% 8%) 0%, hsl(222 84% 6%) 100%);
+  }
+
+  .dark .chart-container {
+    border-color: hsl(217 32.6% 17.5%);
+    background: linear-gradient(180deg, hsl(222 84% 8%) 0%, hsl(222 84% 6%) 100%);
+  }
+
+  .dark .metric-card:hover {
+    box-shadow: 0 4px 24px -4px hsl(222 84% 4.9% / 0.6), 0 8px 32px -8px hsl(var(--primary) / 0.2);
+  }
+
+  .dark .chart-container:hover {
+    box-shadow: 0 4px 24px -4px hsl(222 84% 4.9% / 0.6), 0 6px 24px -6px hsl(var(--primary) / 0.15);
   }
 }
 
@@ -175,5 +236,40 @@
 
   .bg-loss\/10 {
     background-color: hsl(var(--loss) / 0.1);
+  }
+
+  /* Dark mode text improvements */
+  .dark .text-muted-foreground {
+    color: hsl(215 20.2% 65.1%);
+  }
+
+  .dark .text-foreground {
+    color: hsl(210 40% 98%);
+  }
+
+  /* Better contrast for small text in dark mode */
+  .dark .text-xs {
+    color: hsl(215 20.2% 75%);
+  }
+
+  .dark .text-sm {
+    color: hsl(215 20.2% 85%);
+  }
+
+  /* Improved profit/loss colors for dark mode */
+  .dark .text-profit {
+    color: hsl(142 76% 45%);
+  }
+
+  .dark .text-loss {
+    color: hsl(0 84% 65%);
+  }
+
+  .dark .bg-profit\/10 {
+    background-color: hsl(142 76% 36% / 0.15);
+  }
+
+  .dark .bg-loss\/10 {
+    background-color: hsl(0 84% 60% / 0.15);
   }
 }

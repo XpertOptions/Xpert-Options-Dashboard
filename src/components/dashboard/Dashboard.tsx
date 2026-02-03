@@ -6,15 +6,26 @@ import { MetricsSections } from "./MetricsSections";
 import { EquityChart } from "./EquityChart";
 import { DrawdownChart } from "./DrawdownChart";
 import { DailyPnLChart } from "./DailyPnLChart";
+import { LoginDialog } from "@/components/LoginDialog";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { useAuth } from "@/contexts/AuthContext";
 import { formatCurrency } from "@/lib/formatters";
-import { BarChart3, Loader2 } from "lucide-react";
+import { BarChart3, Loader2, LogOut } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 export const Dashboard = () => {
   const { data: settings, isLoading: settingsLoading } = useAccountSettings();
   const { data: dailyPnL, isLoading: pnlLoading } = useDailyPnL();
+  const { isAdmin, logout } = useAuth();
 
   const initialCapital = settings?.initial_capital || 100000;
   const metrics = usePnLCalculations(dailyPnL, initialCapital);
+
+  const handleLogout = () => {
+    logout();
+    toast.success('Logged out successfully');
+  };
 
   if (settingsLoading || pnlLoading) {
     return (
@@ -41,17 +52,29 @@ export const Dashboard = () => {
             </h1>
             <p className="text-sm text-muted-foreground">
               Capital: {formatCurrency(initialCapital)} • {dailyPnL?.length || 0} trading days
+              {isAdmin && <span className="ml-2 px-2 py-1 bg-primary/20 text-primary text-xs rounded-full">Admin</span>}
             </p>
           </div>
         </div>
         <div className="flex items-center gap-3">
-          {settings && (
-            <SettingsDialog
-              currentId={settings.id}
-              currentCapital={settings.initial_capital}
-            />
+          <ThemeToggle />
+          {!isAdmin ? (
+            <LoginDialog />
+          ) : (
+            <>
+              {settings && (
+                <SettingsDialog
+                  currentId={settings.id}
+                  currentCapital={settings.initial_capital}
+                />
+              )}
+              <AddPnLDialog />
+              <Button variant="outline" size="sm" onClick={handleLogout}>
+                <LogOut className="h-4 w-4 mr-2" />
+                Logout
+              </Button>
+            </>
           )}
-          <AddPnLDialog />
         </div>
       </header>
 

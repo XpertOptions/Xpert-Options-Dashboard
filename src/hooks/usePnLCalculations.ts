@@ -18,6 +18,7 @@ export interface PnLMetrics {
   // Win/Loss Metrics
   totalWinDays: number;
   totalLossDays: number;
+  totalActiveDays: number;
   winRate: number;
   currentMonthWinDays: number;
 
@@ -239,7 +240,7 @@ export const usePnLCalculations = (
     }
 
     return {
-      equityCurve,
+      equityCurve: equityCurve.filter(p => p.pnl !== 0),
       currentEquity,
       overallProfit,
       overallProfitPercent,
@@ -249,6 +250,7 @@ export const usePnLCalculations = (
       currentMonthProfitPercent,
       totalWinDays,
       totalLossDays,
+      totalActiveDays: totalDays,
       winRate,
       currentMonthWinDays,
       avgDailyProfit,
@@ -268,7 +270,7 @@ export const usePnLCalculations = (
       maxDrawdownPercent,
       currentDaysInDrawdown: inDrawdown ? currentDrawdownDays : 0,
       maxDaysInDrawdown: maxDrawdownDays,
-      drawdownCurve,
+      drawdownCurve: drawdownCurve.filter((_, i) => equityCurve[i].pnl !== 0),
       recoveryFactor,
       calmarRatio,
       maxWinStreak,
@@ -357,6 +359,7 @@ function getEmptyMetrics(): PnLMetrics {
     currentMonthProfitPercent: 0,
     totalWinDays: 0,
     totalLossDays: 0,
+    totalActiveDays: 0,
     winRate: 0,
     currentMonthWinDays: 0,
     avgDailyProfit: 0,

@@ -54,7 +54,7 @@ export const Dashboard = () => {
               Xpert Options Dashboard
             </h1>
             <p className="text-sm text-muted-foreground">
-              Capital: {formatCurrency(initialCapital)} • {dailyPnL?.length || 0} trading days
+              Capital: {formatCurrency(initialCapital)} • {metrics.totalActiveDays} trading days
               {isAdmin && <span className="ml-2 px-2 py-1 bg-primary/20 text-primary text-xs rounded-full">Admin</span>}
             </p>
           </div>
@@ -101,11 +101,11 @@ export const Dashboard = () => {
           <PnLHeatmap data={dailyPnL?.map(d => ({ date: d.trade_date, pnl: d.pnl })) || []} />
         </div>
         <div className="mt-6">
-          <MonthlyPnLReport data={dailyPnL?.map(d => ({ date: d.trade_date, pnl: d.pnl })) || []} />
+          <MonthlyPnLReport data={dailyPnL?.filter(d => d.pnl !== 0).map(d => ({ date: d.trade_date, pnl: d.pnl })) || []} />
         </div>
         <div className="mt-6">
           <PnLCurve
-            data={dailyPnL?.map(d => ({ date: d.trade_date, pnl: d.pnl })) || []}
+            data={dailyPnL?.filter(d => d.pnl !== 0).map(d => ({ date: d.trade_date, pnl: d.pnl })) || []}
             initialCapital={initialCapital}
           />
         </div>

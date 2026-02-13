@@ -48,8 +48,10 @@ export const MonthlyPnLReport = ({ data }: MonthlyPnLReportProps) => {
                         inDD = false;
                     }
                 } else {
-                    inDD = true;
-                    currentDDDays++;
+                    if (d.pnl !== 0) { // Only count active trading days in DD duration
+                        inDD = true;
+                        currentDDDays++;
+                    }
                     const dd = peakEquity - runningEquity;
                     maxDD = Math.max(maxDD, dd);
                 }

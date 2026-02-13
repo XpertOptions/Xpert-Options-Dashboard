@@ -6,7 +6,7 @@ export interface PnLMetrics {
   // Equity
   equityCurve: { date: string; equity: number; pnl: number; percentChange: number }[];
   currentEquity: number;
-  
+
   // Profit Metrics
   overallProfit: number;
   overallProfitPercent: number;
@@ -14,13 +14,13 @@ export interface PnLMetrics {
   todayProfitPercent: number;
   currentMonthProfit: number;
   currentMonthProfitPercent: number;
-  
+
   // Win/Loss Metrics
   totalWinDays: number;
   totalLossDays: number;
   winRate: number;
   currentMonthWinDays: number;
-  
+
   // Average Metrics
   avgDailyProfit: number;
   avgDailyProfitPercent: number;
@@ -28,13 +28,13 @@ export interface PnLMetrics {
   avgWinPercent: number;
   avgLoss: number;
   avgLossPercent: number;
-  
+
   // Risk Metrics
   riskRewardRatio: number;
   profitFactor: number;
   expectancy: number;
   expectancyPercent: number;
-  
+
   // Drawdown Metrics
   peakEquity: number;
   currentDrawdown: number;
@@ -44,11 +44,11 @@ export interface PnLMetrics {
   currentDaysInDrawdown: number;
   maxDaysInDrawdown: number;
   drawdownCurve: { date: string; drawdown: number; drawdownPercent: number }[];
-  
+
   // Advanced Ratios
   recoveryFactor: number;
   calmarRatio: number;
-  
+
   // Streak Metrics
   maxWinStreak: number;
   currentStreak: number;
@@ -83,7 +83,7 @@ export const usePnLCalculations = (
     let peakEquity = initialCapital;
     let maxDrawdown = 0;
     let maxDrawdownPercent = 0;
-    
+
     const equityCurve = sortedData.map((day) => {
       runningEquity += day.pnl;
       const percentChange = ((runningEquity - initialCapital) / initialCapital) * 100;
@@ -102,7 +102,7 @@ export const usePnLCalculations = (
     let maxDrawdownDays = 0;
     let inDrawdown = false;
     let drawdownStartEquity = initialCapital;
-    
+
     const drawdownCurve = equityCurve.map((point, index) => {
       if (point.equity > peakEquity) {
         peakEquity = point.equity;
@@ -118,15 +118,15 @@ export const usePnLCalculations = (
         }
         currentDrawdownDays++;
       }
-      
+
       const drawdown = peakEquity - point.equity;
       const drawdownPercent = peakEquity > 0 ? (drawdown / peakEquity) * 100 : 0;
-      
+
       if (drawdown > maxDrawdown) {
         maxDrawdown = drawdown;
         maxDrawdownPercent = drawdownPercent;
       }
-      
+
       return {
         date: point.date,
         drawdown,
@@ -168,28 +168,30 @@ export const usePnLCalculations = (
     // Win/Loss metrics
     const winDays = sortedData.filter((d) => d.pnl > 0);
     const lossDays = sortedData.filter((d) => d.pnl < 0);
+    const activeTradingDays = sortedData.filter((d) => d.pnl !== 0);
+
     const totalWinDays = winDays.length;
     const totalLossDays = lossDays.length;
-    const totalDays = sortedData.length;
+    const totalDays = activeTradingDays.length;
     const winRate = totalDays > 0 ? (totalWinDays / totalDays) * 100 : 0;
 
     // Average metrics
     const totalProfit = winDays.reduce((sum, d) => sum + d.pnl, 0);
     const totalLoss = Math.abs(lossDays.reduce((sum, d) => sum + d.pnl, 0));
-    
+
     const avgDailyProfit = totalDays > 0 ? overallProfit / totalDays : 0;
     const avgDailyProfitPercent = (avgDailyProfit / initialCapital) * 100;
-    
+
     const avgWin = totalWinDays > 0 ? totalProfit / totalWinDays : 0;
     const avgWinPercent = (avgWin / initialCapital) * 100;
-    
+
     const avgLoss = totalLossDays > 0 ? totalLoss / totalLossDays : 0;
     const avgLossPercent = (avgLoss / initialCapital) * 100;
 
     // Risk metrics
     const riskRewardRatio = avgLoss > 0 ? avgWin / avgLoss : avgWin > 0 ? Infinity : 0;
     const profitFactor = totalLoss > 0 ? totalProfit / totalLoss : totalProfit > 0 ? Infinity : 0;
-    
+
     const expectancy = totalDays > 0
       ? (winRate / 100) * avgWin - ((100 - winRate) / 100) * avgLoss
       : 0;
@@ -197,11 +199,10 @@ export const usePnLCalculations = (
 
     // Advanced ratios
     const recoveryFactor = maxDrawdown > 0 ? overallProfit / maxDrawdown : overallProfit > 0 ? Infinity : 0;
-    
+
     // Annualized return (assuming 252 trading days)
-    const tradingDays = sortedData.length;
-    const annualizedReturn = tradingDays > 0 
-      ? (overallProfitPercent / tradingDays) * 252 
+    const annualizedReturn = totalDays > 0
+      ? (overallProfitPercent / totalDays) * 252
       : 0;
     const calmarRatio = maxDrawdownPercent > 0 ? annualizedReturn / maxDrawdownPercent : 0;
 
@@ -310,7 +311,7 @@ function calculateStats(sortedData: DailyPnL[]) {
     const pastDaysOfYear = (date.getTime() - firstDayOfYear.getTime()) / 86400000;
     const weekNum = Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
     const weekKey = `${year}-W${weekNum}`;
-    
+
     weeklyPnL[weekKey] = (weeklyPnL[weekKey] || 0) + d.pnl;
   });
 

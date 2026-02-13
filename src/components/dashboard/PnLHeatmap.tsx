@@ -18,7 +18,7 @@ import { formatCurrency } from "@/lib/formatters";
 import { cn } from "@/lib/utils";
 
 interface PnLHeatmapProps {
-    data: { date: string; pnl: number }[];
+    data: { date: string; pnl: number; is_no_trade_day?: boolean }[];
 }
 
 export const PnLHeatmap = ({ data }: PnLHeatmapProps) => {
@@ -40,7 +40,8 @@ export const PnLHeatmap = ({ data }: PnLHeatmapProps) => {
 
     const getColorClass = (pnl: number | undefined) => {
         if (pnl === undefined) return "bg-muted/30";
-        if (pnl === 0) return "bg-muted";
+        if (pnl === 0) return "bg-yellow-500/50";
+
         if (pnl > 0) {
             if (pnl > 10000) return "bg-emerald-600";
             if (pnl > 5000) return "bg-emerald-500";
@@ -116,11 +117,15 @@ export const PnLHeatmap = ({ data }: PnLHeatmapProps) => {
                                                 <TooltipContent>
                                                     <div className="text-xs">
                                                         <p className="font-semibold">{format(day, "PPP")}</p>
-                                                        <p className={cn(
-                                                            pnl && pnl > 0 ? "text-emerald-500" : pnl && pnl < 0 ? "text-red-500" : ""
-                                                        )}>
-                                                            {pnl !== undefined ? `P&L: ${formatCurrency(pnl, true)}` : "No trades"}
-                                                        </p>
+                                                        {pnl === 0 ? (
+                                                            <p className="text-yellow-500 font-medium italic">No Trade Day</p>
+                                                        ) : (
+                                                            <p className={cn(
+                                                                pnl !== undefined && pnl > 0 ? "text-emerald-500" : pnl !== undefined && pnl < 0 ? "text-red-500" : ""
+                                                            )}>
+                                                                {pnl !== undefined ? `P&L: ${formatCurrency(pnl, true)}` : "No trades"}
+                                                            </p>
+                                                        )}
                                                     </div>
                                                 </TooltipContent>
                                             </Tooltip>
